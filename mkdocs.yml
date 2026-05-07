@@ -1,8 +1,8 @@
 site_name: Soleil Freight BRD
 site_description: Internal BRD portal for Soleil Transportation
-site_url: https://soleil-transportation.github.io/solfreight-brd
-repo_url: https://github.com/soleil-transportation/SolFreight
-repo_name: Soleil Transportation / SolFreight
+site_url: https://soleil-transportation-it-support.github.io/sol-freight-docs/
+repo_url: https://github.com/soleil-transportation-it-support/sol-freight-docs
+repo_name: Soleil / sol-freight-docs
 
 theme:
   name: material
