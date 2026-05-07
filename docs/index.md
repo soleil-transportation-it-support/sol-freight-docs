@@ -4,6 +4,7 @@ This portal supports the staged delivery of Soleil Freight as an in-house platfo
 
 ## Start Here
 
+- [Program Roadmap](roadmap.md)
 - [Ocean Export Overview](ocean-export/index.md)
 - [MBL BRD](ocean-export/mbl.md)
 - [HBL BRD](ocean-export/hbl.md)
@@ -29,23 +30,11 @@ The same roadmap also recommends a selective migration strategy instead of movin
 | Product Owner / Operations Lead | Defines shipment workflows, mandatory fields, forms, numbering rules, and operational acceptance criteria. | Helen Nguyen, Hanni Hoang | Celinde Nguyen, Louis Tong |
 | Finance Lead | Defines AR/AP workflows, chart of accounts, reporting logic, tax rules, period close, and controls. | Benjamin Le | Helen Nguyen, Rosia Nguyen |
 | Technical Lead / Architect | Owns platform architecture, integrations, security, environments, and technical quality. | Austin Truong | Benjamin Le |
-| Quality Assurance (QA) / UAT Lead | Coordinates test cases, defect triage, parallel run validation, and sign-off evidence. | Austin Truong | Louis Tong |
+| Quality Assurance (QA) / UAT Lead | Ben leads test case creation; team runs parallel 2-system testing to identify discrepancies and flags issues to IT for resolution. | Ben | Celinde, Louis, Austin |
 | Change Management Lead | Manages SOP updates, training, super users, and adoption. | Louis Tong | Benjamin Le |
 
-## Indicative 6-Month Roadmap
+## Roadmap & Progress
 
-| Timeframe | Stage | Scope Focus | Primary Output |
-|---|---|---|---|
-| Month 1 | Preparation | Discovery, architecture, field mapping, form inventory, data model, and migration strategy. | Approved blueprint and prioritized backlog. |
-| Months 2-3 | Phase 1 | Replicate core shipment creation and document generation. | Operational MVP live for selected modules and users. |
-| Months 4-5 | Phase 2 | Launch AR, AP, SOA, bank entry, and financial statements. | Finance-enabled release with controlled month-end process. |
-| Month 6+ | Phase 3 Wave 1 | Add workflow efficiencies, quote-to-shipment-to-invoice linkage, tracking, and export tools. | Higher automation and lower duplicate entry. |
-| Future | Phase 3 Wave 2+ | Portal, deeper CRM, compliance connectors, warehouse, analytics, and APIs. | Digital expansion platform. |
+The detailed timeline, phase status, and rolling progress updates are maintained on the dedicated roadmap page:
 
-### Roadmap View
-
-1. **Month 1 - Preparation**: Discovery, architecture, field mapping, form inventory, data model, and migration strategy.
-2. **Months 2-3 - Phase 1**: Core shipment creation and document generation to establish the operational MVP.
-3. **Months 4-5 - Phase 2**: Finance foundation covering AR, AP, SOA, bank entry, and financial statements.
-4. **Month 6+ - Phase 3 Wave 1**: Workflow automation, quote-to-shipment-to-invoice linkage, tracking, and export tools.
-5. **Future - Phase 3 Wave 2+**: Portal, deeper CRM, compliance connectors, warehouse, analytics, and API expansion.
+- [Program Roadmap](roadmap.md)
