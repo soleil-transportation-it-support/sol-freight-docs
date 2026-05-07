@@ -8,6 +8,7 @@ This portal supports the staged delivery of Soleil Freight as an in-house platfo
 - [Ocean Export Overview](ocean-export/index.md)
 - [MBL BRD](ocean-export/mbl.md)
 - [HBL BRD](ocean-export/hbl.md)
+- [Trade Partners BRD](trade-partners.md)
 
 ## Why Soleil Freight Exists
 
