@@ -1,0 +1,43 @@
+:root {
+  --sol-yellow: #f1c40f;
+  --sol-yellow-dark: #e0b20a;
+  --sol-ink: #1a1a1a;
+
+  --md-primary-fg-color: var(--sol-yellow);
+  --md-primary-fg-color--light: #f6d95c;
+  --md-primary-fg-color--dark: var(--sol-yellow-dark);
+}
+
+.md-header,
+.md-tabs {
+  background-color: var(--sol-yellow);
+  color: var(--sol-ink);
+}
+
+.md-header__title,
+.md-header__topic,
+.md-tabs__link,
+.md-header__button,
+.md-search__icon,
+.md-search__input,
+.md-search__form,
+.md-source,
+.md-source__repository,
+.md-source__facts {
+  color: var(--sol-ink) !important;
+}
+
+.md-tabs__link--active,
+.md-tabs__link:hover {
+  opacity: 1;
+  font-weight: 700;
+}
+
+.md-search__form {
+  background-color: rgba(26, 26, 26, 0.08);
+}
+
+h1, h2, h3 {
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}

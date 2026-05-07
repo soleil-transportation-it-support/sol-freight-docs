@@ -7,6 +7,9 @@ repo_name: Soleil / sol-freight-docs
 theme:
   name: material
   language: en
+  font:
+    text: Barlow
+    code: JetBrains Mono
   palette:
     - scheme: default
       primary: teal
@@ -27,6 +30,9 @@ plugins:
   - search
   - minify:
       minify_html: true
+
+extra_css:
+  - stylesheets/solfreight-theme.css
 
 docs_dir: docs
 site_dir: site
