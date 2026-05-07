@@ -107,13 +107,13 @@ textarea {
 }
 
 .md-typeset h1 {
-  font-size: 2rem;
+  font-size: 32px;
   font-weight: 700;
   letter-spacing: -0.01em;
 }
 
 .md-typeset h2 {
-  font-size: 1.5rem;
+  font-size: 24px;
   font-weight: 600;
 }
 
@@ -122,8 +122,21 @@ textarea {
 .md-typeset li,
 .md-typeset td,
 .md-typeset th {
-  font-size: 0.875rem;
+  font-size: 14px;
   line-height: 1.45;
+}
+
+.md-typeset .mermaid {
+  overflow-x: auto;
+  padding: 8px 0 12px;
+}
+
+.md-typeset .mermaid svg {
+  width: 1500px;
+  max-width: none;
+  min-width: 1500px;
+  min-height: 360px;
+  height: auto;
 }
 
 .md-typeset table:not([class]) {
@@ -162,4 +175,56 @@ textarea {
 .md-top:focus,
 .md-top:hover {
   background: var(--sol-yellow-dark);
+}
+
+.roadmap-scroll {
+  overflow-x: auto;
+  padding-bottom: 12px;
+}
+
+.roadmap-wide {
+  min-width: 1650px;
+}
+
+.roadmap-wide .mermaid svg {
+  width: 1600px;
+  min-width: 1600px;
+  min-height: 420px;
+}
+
+.roadmap-lanes {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.roadmap-card {
+  border: 1px solid var(--sol-outline);
+  padding: 12px;
+  background: var(--sol-surface);
+}
+
+.roadmap-card h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+.roadmap-card p {
+  margin: 0 0 6px;
+}
+
+.roadmap-card.done {
+  border-left: 6px solid #2e7d32;
+}
+
+.roadmap-card.active {
+  border-left: 6px solid #ef6c00;
+}
+
+.roadmap-card.planned {
+  border-left: 6px solid #1565c0;
+}
+
+.roadmap-card.backlog {
+  border-left: 6px solid #6d4c41;
 }
