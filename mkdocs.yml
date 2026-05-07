@@ -1,0 +1,39 @@
+site_name: Soleil Freight BRD
+site_description: Internal BRD portal for Soleil Transportation
+site_url: https://soleil-transportation.github.io/solfreight-brd
+repo_url: https://github.com/soleil-transportation/SolFreight
+repo_name: Soleil Transportation / SolFreight
+
+theme:
+  name: material
+  language: en
+  palette:
+    - scheme: default
+      primary: teal
+      accent: amber
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+
+markdown_extensions:
+  - admonition
+  - tables
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+  - minify:
+      minify_html: true
+
+docs_dir: docs
+site_dir: site
+
+nav:
+  - Home: index.md
+  - Ocean Export:
+      - Overview: ocean-export/index.md
+      - MBL BRD: ocean-export/mbl.md
+      - HBL BRD: ocean-export/hbl.md

@@ -1,0 +1,6 @@
+node_modules/
+site/
+artifacts/raw/*.png
+artifacts/raw/*.json
+artifacts/processed/*.json
+.env

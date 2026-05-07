@@ -1,0 +1,20 @@
+{
+  "name": "solfreight-brd-pipeline",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "scan:ocean-export": "node scripts/playwright/ocean-export.scan.mjs",
+    "generate:brd": "node scripts/agents/generate-brd.mjs",
+    "build:docs": "mkdocs build --clean",
+    "serve:docs": "mkdocs serve -a 127.0.0.1:8800",
+    "export:pdf": "node scripts/export/export-pdf.mjs",
+    "poc:ocean-export": "node scripts/run-poc.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.54.0"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3"
+  }
+}

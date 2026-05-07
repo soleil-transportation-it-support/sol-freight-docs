@@ -1,0 +1,181 @@
+{
+  "feature": "ocean-export",
+  "comment": "No login route in this app. Set SEEDED_MBL_ID to the first MBL id after --reset (typically 1).",
+  "seededMblId": 1,
+  "flows": [
+    {
+      "id": "mbl",
+      "title": "Ocean Export - Master Bill of Lading (MBL)",
+      "steps": [
+        {
+          "id": "mbl-list",
+          "description": "Shipment list filtered to ocean mode — entry point to MBL management.",
+          "path": "/shipments?mode=ocean",
+          "waitForSelector": "body",
+          "scrollToBottom": true,
+          "focusSelectors": [
+            "button",
+            "input[type='search'], input[placeholder]",
+            "table thead th"
+          ]
+        },
+        {
+          "id": "mbl-create",
+          "description": "New MBL form — all sections visible on one page.",
+          "path": "/ocean/masters/new",
+          "waitForSelector": "form#mbl-form",
+          "scrollToBottom": true,
+          "requiredFields": ["input[name='mbl_no']", "input[name='office']"],
+          "focusSelectors": [
+            "input[name='mbl_no']",
+            "input[name='file_no']",
+            "input[name='office']",
+            "select[name='bl_type']",
+            "input[name='post_date']",
+            "input[name='carrier_bkg_no']",
+            "input[name='carrier']",
+            "input[name='bl_acct_carrier']",
+            "input[name='shipping_agent_id']",
+            "input[name='overseas_agent_id']",
+            "input[name='notify_party_id']",
+            "input[name='forwarding_agent_id']",
+            "input[name='co_loader_id']",
+            "input[name='op']",
+            "input[name='carrier_contract_no']",
+            "input[name='vessel_id']",
+            "input[name='voyage_no']",
+            "input[name='place_of_receipt']",
+            "input[name='port_of_loading']",
+            "input[name='etd']",
+            "input[name='port_of_discharge']",
+            "input[name='eta']",
+            "input[name='place_of_delivery']",
+            "input[name='final_destination']",
+            "select[name='freight_type']",
+            "select[name='ship_mode']",
+            "select[name='svc_term_origin']",
+            "select[name='svc_term_dest']",
+            "input[name='container_qty']",
+            "select[name='ob_bl_type']",
+            "input[name='doc_cut_off_date']",
+            "input[name='port_cut_off_date']",
+            "input[name='vgm_cut_off_date']",
+            "input[name='container_no']",
+            "select[name='container_size']",
+            "input[name='seal_no']",
+            "input[name='number_of_packages']",
+            "input[name='gross_weight']",
+            "input[name='net_weight']",
+            "input[name='measurement']",
+            "textarea[name='marks_numbers']",
+            "textarea[name='description_of_goods']",
+            "textarea[name='domestic_routing']",
+            "button[form='mbl-form']"
+          ]
+        },
+        {
+          "id": "mbl-detail",
+          "description": "MBL detail view for a seeded record — shows all populated fields and HBL sub-list.",
+          "pathTemplate": "/ocean/masters/{seededMblId}",
+          "waitForSelector": "body",
+          "scrollToBottom": true,
+          "focusSelectors": [
+            "button",
+            "a[href*='houses/new']",
+            "table tbody tr"
+          ]
+        },
+        {
+          "id": "mbl-validation-error",
+          "description": "Submit empty MBL form to capture required-field error state.",
+          "path": "/ocean/masters/new",
+          "waitForSelector": "form#mbl-form",
+          "triggerSubmit": true,
+          "submitSelector": "button[form='mbl-form'][type='submit']",
+          "focusSelectors": [
+            "input[name='mbl_no']",
+            "p.text-error",
+            "div.border-error"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hbl",
+      "title": "Ocean Export - House Bill of Lading (HBL)",
+      "steps": [
+        {
+          "id": "hbl-create",
+          "description": "New HBL form opened under a seeded MBL — MBL banner visible at top, all HBL fields below.",
+          "pathTemplate": "/ocean/masters/{seededMblId}/houses/new",
+          "waitForSelector": "form#hbl-form",
+          "scrollToBottom": true,
+          "requiredFields": ["input[name='hbl_no']", "input[name='actual_shipper_id']"],
+          "focusSelectors": [
+            "input[name='hbl_no']",
+            "input[name='booking_no']",
+            "input[name='ams_no']",
+            "input[name='isf_no']",
+            "input[name='customer_ref_no']",
+            "input[name='document_no']",
+            "input[name='quotation_no']",
+            "input[name='actual_shipper_id']",
+            "select[name='bl_type']",
+            "input[name='file_no']",
+            "input[name='post_date']",
+            "input[name='customer_id']",
+            "input[name='bill_to_id']",
+            "input[name='consignee_id']",
+            "input[name='notify_party_id']",
+            "input[name='also_notify_id']",
+            "input[name='hbl_agent_id']",
+            "input[name='forwarding_agent_id']",
+            "input[name='co_loader_id']",
+            "input[name='customs_broker_id']",
+            "input[name='trucker_id']",
+            "input[name='sales']",
+            "input[name='op']",
+            "input[name='place_of_receipt']",
+            "input[name='port_of_loading']",
+            "input[name='port_of_discharge']",
+            "input[name='eta']",
+            "input[name='place_of_delivery']",
+            "input[name='final_destination']",
+            "select[name='buying_freight']",
+            "select[name='selling_freight']",
+            "select[name='cargo_type']",
+            "select[name='ship_mode']",
+            "select[name='svc_term_origin']",
+            "select[name='svc_term_dest']",
+            "input[name='container_qty']",
+            "input[name='on_board_date']",
+            "input[name='container_no']",
+            "select[name='container_size']",
+            "input[name='seal_no']",
+            "input[name='number_of_packages']",
+            "input[name='gross_weight']",
+            "input[name='net_weight']",
+            "input[name='measurement']",
+            "textarea[name='marks_numbers']",
+            "textarea[name='description_of_goods']",
+            "button[form='hbl-form']"
+          ]
+        },
+        {
+          "id": "hbl-validation-error",
+          "description": "Submit empty HBL form to capture required-field error state.",
+          "pathTemplate": "/ocean/masters/{seededMblId}/houses/new",
+          "waitForSelector": "form#hbl-form",
+          "triggerSubmit": true,
+          "submitSelector": "button[form='hbl-form'][type='submit']",
+          "focusSelectors": [
+            "input[name='hbl_no']",
+            "input[name='actual_shipper_id']",
+            "p.text-error",
+            "div.border-error"
+          ]
+        }
+      ]
+    }
+  ]
+}
