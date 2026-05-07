@@ -8,11 +8,11 @@ theme:
   name: material
   language: en
   font:
-    text: Barlow
-    code: JetBrains Mono
+    text: Inter
+    code: Inter
   palette:
     - scheme: default
-      primary: teal
+      primary: amber
       accent: amber
   features:
     - navigation.tabs
