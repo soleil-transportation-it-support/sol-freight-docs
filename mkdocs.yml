@@ -23,6 +23,11 @@ theme:
 markdown_extensions:
   - admonition
   - tables
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - toc:
       permalink: true
 
@@ -34,11 +39,16 @@ plugins:
 extra_css:
   - stylesheets/solfreight-theme.css
 
+extra_javascript:
+  - https://unpkg.com/mermaid@10/dist/mermaid.min.js
+  - javascripts/mermaid.js
+
 docs_dir: docs
 site_dir: site
 
 nav:
   - Home: index.md
+  - Program Roadmap: roadmap.md
   - Ocean Export:
       - Overview: ocean-export/index.md
       - MBL BRD: ocean-export/mbl.md
