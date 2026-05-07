@@ -27,7 +27,7 @@
           "waitForSelector": "form#mbl-form",
           "screenshotSelector": "form#mbl-form",
           "scrollToBottom": true,
-          "requiredFields": ["input[name='mbl_no']", "input[name='office']"],
+          "requiredFields": ["input[name='office']"],
           "focusSelectors": [
             "input[name='mbl_no']",
             "input[name='file_no']",
@@ -115,7 +115,7 @@
           "waitForSelector": "form#hbl-form",
           "screenshotSelector": "form#hbl-form",
           "scrollToBottom": true,
-          "requiredFields": ["input[name='hbl_no']", "input[name='actual_shipper_id']"],
+          "requiredFields": ["input[name='actual_shipper_id']"],
           "focusSelectors": [
             "input[name='hbl_no']",
             "input[name='booking_no']",

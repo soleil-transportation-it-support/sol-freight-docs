@@ -30,13 +30,12 @@ _Submit empty MBL form to capture required-field error state._
 6. Date fields only accept valid date input (ISO YYYY-MM-DD) and do not accept free-form text.
 
 ## Validation Rules
-1. **MB/L No.*** (`name="mbl_no"`) must not be empty; form must block submission and highlight the field with an error message.
-2. **Office*** (`name="office"`) must not be empty; form must block submission and highlight the field with an error message.
+1. **Office*** (`name="office"`) must not be empty; form must block submission and highlight the field with an error message.
 
 ## Field Semantics
 | Label | Name | Required | Business Meaning | Allowed Values / Format | Data Source / Reference |
 |---|---|---|---|---|---|
-| MB/L No.* | `mbl_no` | No | The carrier's official shipment reference number as it appears on the Master Bill of Lading. Must match the booking confirmation issued by the shipping line. | Free text | Entered directly by the user and stored in the shipment record. |
+| MB/L No.* | `mbl_no` | No | System-generated Master BL number. This field is read-only and assigned automatically by the application. | System-generated (read-only) | Generated and maintained by the application; not entered by users. |
 | Office* | `office` | No | The Soleil branch office responsible for filing and managing this shipment. | Free text | Entered directly by the user and stored in the shipment record. |
 | B/L Type | `bl_type` | No | Defines the commercial arrangement for how this Bill of Lading is structured and billed — e.g., whether it is a direct shipment, a consolidation, or a co-load. | CARRIER BUYER CONSOL, CO-LOAD, CONSOL, DIRECT, DIRECT TRIANGLE, FORWARDING, NORMAL, THIRD PARTY, TRIANGLE | Fixed dropdown list configured in the application. |
 | Carrier Bkg. No. | `carrier_bkg_no` | No | The booking confirmation number provided by the carrier (shipping line). Confirms that space has been reserved on the vessel. | Free text | Entered directly by the user and stored in the shipment record. |
