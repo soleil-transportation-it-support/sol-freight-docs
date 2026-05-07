@@ -27,10 +27,10 @@ The same roadmap also recommends a selective migration strategy instead of movin
 |---|---|---|---|
 | Executive Sponsor | Sets budget, priority, and final scope decisions. | Benjamin Le, Oliver Bui | - |
 | Project Manager | Owns schedule, RAID log, workstream coordination, UAT planning, cutover plan, and status reporting. | Austin Truong | - |
-| Product Owner / Operations Lead | Defines shipment workflows, mandatory fields, forms, numbering rules, and operational acceptance criteria. | Helen Nguyen, Hanni Hoang | Celinde Nguyen, Louis Tong |
-| Finance Lead | Defines AR/AP workflows, chart of accounts, reporting logic, tax rules, period close, and controls. | Benjamin Le | Helen Nguyen, Rosia Nguyen |
+| Product Owner / Operations Lead | Defines shipment workflows, mandatory fields, forms, numbering rules, and operational acceptance criteria. | Helen Pham, Hanni Hoang | Celinde Nguyen, Louis Tong |
+| Finance Lead | Defines AR/AP workflows, chart of accounts, reporting logic, tax rules, period close, and controls. | Benjamin Le | Helen Pham, Rosia Nguyen |
 | Technical Lead / Architect | Owns platform architecture, integrations, security, environments, and technical quality. | Austin Truong | Benjamin Le |
-| Quality Assurance (QA) / UAT Lead | Ben leads test case creation; team runs parallel 2-system testing to identify discrepancies and flags issues to IT for resolution. | Ben | Celinde, Louis, Austin |
+| Quality Assurance (QA) / UAT Lead | Benjamin leads test case creation; team runs parallel 2-system testing to identify discrepancies and flags issues to IT for resolution. | Benjamin Le | Celinde Nguyen, Louis Tong, Austin Truong|
 | Change Management Lead | Manages SOP updates, training, super users, and adoption. | Louis Tong | Benjamin Le |
 
 ## Roadmap & Progress
