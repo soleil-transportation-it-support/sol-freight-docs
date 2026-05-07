@@ -322,7 +322,7 @@ function renderMarkdown(flow, fields, sections, requiredSelectors, screenshots) 
   const fieldRows = fields
     .map(
       (f) =>
-        `| ${f.label} | \`${f.name}\` | ${f.type} | ${f.required ? "**Yes**" : "No"} | ${inferMeaning(f, flow.id)} | ${inferValueSpec(f, flow.id)} | ${inferDataSource(f)} |`
+        `| ${f.label} | \`${f.name}\` | ${f.required ? "**Yes**" : "No"} | ${inferMeaning(f, flow.id)} | ${inferValueSpec(f, flow.id)} | ${inferDataSource(f)} |`
     )
     .join("\n");
 
@@ -345,7 +345,7 @@ function renderMarkdown(flow, fields, sections, requiredSelectors, screenshots) 
     `## UI Evidence\n${imageBlocks || "_No screenshots found._"}\n\n` +
     `## Acceptance Criteria\n${acceptance.map((ac, i) => `${i + 1}. ${ac}`).join("\n")}\n\n` +
     `## Validation Rules\n${validationRules}\n\n` +
-    `## Field Semantics\n| Label | Name | Type | Required | Business Meaning | Allowed Values / Format | Data Source / Reference |\n|---|---|---|---|---|---|---|\n${fieldRows || "| - | - | - | - | - | - | - |"}\n\n` +
+    `## Field Semantics\n| Label | Name | Required | Business Meaning | Allowed Values / Format | Data Source / Reference |\n|---|---|---|---|---|---|\n${fieldRows || "| - | - | - | - | - | - |"}\n\n` +
     `## Reference Data & Enum Catalog\n| Label | Name | Enum / Lookup Values | Source |\n|---|---|---|---|\n${referenceRows}\n`
   );
 }
