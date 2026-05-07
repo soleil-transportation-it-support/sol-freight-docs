@@ -12,6 +12,7 @@
           "description": "Shipment list filtered to ocean mode — entry point to MBL management.",
           "path": "/shipments?mode=ocean",
           "waitForSelector": "body",
+          "screenshotSelector": "table",
           "scrollToBottom": true,
           "focusSelectors": [
             "button",
@@ -24,6 +25,7 @@
           "description": "New MBL form — all sections visible on one page.",
           "path": "/ocean/masters/new",
           "waitForSelector": "form#mbl-form",
+          "screenshotSelector": "form#mbl-form",
           "scrollToBottom": true,
           "requiredFields": ["input[name='mbl_no']", "input[name='office']"],
           "focusSelectors": [
@@ -78,6 +80,7 @@
           "description": "MBL detail view for a seeded record — shows all populated fields and HBL sub-list.",
           "pathTemplate": "/ocean/masters/{seededMblId}",
           "waitForSelector": "body",
+          "screenshotSelector": "main",
           "scrollToBottom": true,
           "focusSelectors": [
             "button",
@@ -90,6 +93,7 @@
           "description": "Submit empty MBL form to capture required-field error state.",
           "path": "/ocean/masters/new",
           "waitForSelector": "form#mbl-form",
+          "screenshotSelector": "form#mbl-form",
           "triggerSubmit": true,
           "submitSelector": "button[form='mbl-form'][type='submit']",
           "focusSelectors": [
@@ -109,6 +113,7 @@
           "description": "New HBL form opened under a seeded MBL — MBL banner visible at top, all HBL fields below.",
           "pathTemplate": "/ocean/masters/{seededMblId}/houses/new",
           "waitForSelector": "form#hbl-form",
+          "screenshotSelector": "form#hbl-form",
           "scrollToBottom": true,
           "requiredFields": ["input[name='hbl_no']", "input[name='actual_shipper_id']"],
           "focusSelectors": [
@@ -166,6 +171,7 @@
           "description": "Submit empty HBL form to capture required-field error state.",
           "pathTemplate": "/ocean/masters/{seededMblId}/houses/new",
           "waitForSelector": "form#hbl-form",
+          "screenshotSelector": "form#hbl-form",
           "triggerSubmit": true,
           "submitSelector": "button[form='hbl-form'][type='submit']",
           "focusSelectors": [

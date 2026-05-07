@@ -117,6 +117,37 @@ async function extractSections(page) {
   );
 }
 
+async function captureScreenshot(page, step, screenshotPath) {
+  const configuredSelectors = Array.isArray(step.screenshotSelectors)
+    ? step.screenshotSelectors
+    : step.screenshotSelector
+      ? [step.screenshotSelector]
+      : [];
+
+  const autoSelectors = [];
+  if (step.waitForSelector && step.waitForSelector !== "body") {
+    autoSelectors.push(step.waitForSelector);
+  }
+  autoSelectors.push("form#mbl-form", "form#hbl-form", "table", "main");
+
+  const selectors = [...configuredSelectors, ...autoSelectors];
+
+  for (const sel of selectors) {
+    try {
+      const locator = page.locator(sel).first();
+      if ((await locator.count()) === 0) continue;
+      if (!(await locator.isVisible())) continue;
+      await locator.screenshot({ path: screenshotPath });
+      return { mode: "element", selector: sel };
+    } catch {
+      // Try next selector.
+    }
+  }
+
+  await page.screenshot({ path: screenshotPath, fullPage: true });
+  return { mode: "fullPage", selector: null };
+}
+
 async function run() {
   await fs.mkdir(rawDir, { recursive: true });
   const config = await loadConfig();
@@ -144,6 +175,8 @@ async function run() {
       let error = null;
       let metadata = [];
       let sections = [];
+      let screenshotMode = "fullPage";
+      let screenshotSelectorUsed = null;
 
       console.log(`  Step: ${step.id} → ${url}`);
 
@@ -182,7 +215,9 @@ async function run() {
           });
         });
 
-        await page.screenshot({ path: path.join(rawDir, screenshotName), fullPage: true });
+        const screenshotResult = await captureScreenshot(page, step, path.join(rawDir, screenshotName));
+        screenshotMode = screenshotResult.mode;
+        screenshotSelectorUsed = screenshotResult.selector;
 
         // Restore
         await page.evaluate(() => {
@@ -205,6 +240,8 @@ async function run() {
         path: resolvedPath,
         url,
         screenshot: `artifacts/raw/${screenshotName}`,
+        screenshotMode,
+        screenshotSelectorUsed,
         sections,
         requiredFields: step.requiredFields || [],
         metadataCount: metadata.length,
