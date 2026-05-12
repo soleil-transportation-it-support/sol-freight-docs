@@ -20,7 +20,9 @@ const ENUM_BY_FLOW = {
     svc_term_dest:   ["BT", "CFS", "CY", "DOOR", "FI", "FO", "FOT", "RAMP", "TACKLE"],
     ob_bl_type: ["EXPRESS BILL OF LADING", "ORIGINAL BILL OF LADING", "SEAWAY BILL", "ELECTRONIC BL (EBL) & IBL"],
     reason_for_cancel: ["CUSTOMER REQUEST", "DUPLICATE", "AMENDMENT", "OTHER"],
-    container_size: ["20GP", "40GP", "40HC", "45HC", "20RF", "40RF"]
+    container_size: ["20GP", "40GP", "40HC", "45HC", "20RF", "40RF"],
+    direct_cargo_type: ["AUTOMOBILE (NON-HAZ)", "BATTERY", "GENERAL CARGO", "HAZARDOUS", "REFRIGERATED", "SPECIAL"],
+    direct_sales_type: ["CO-LOAD", "FREE CARGO", "NOMI"]
   },
   hbl: {
     bl_type: ["CARRIER BUYER CONSOL", "CO-LOAD", "CONSOL", "DIRECT", "DIRECT TRIANGLE", "FORWARDING", "NORMAL", "THIRD PARTY", "TRIANGLE"],
@@ -45,12 +47,15 @@ const LOCATION_FIELDS = new Set([
 const TRADE_PARTNER_FIELDS = new Set([
   "shipping_agent_id", "overseas_agent_id", "notify_party_id", "forwarding_agent_id",
   "co_loader_id", "customer_id", "bill_to_id", "actual_shipper_id", "consignee_id",
-  "also_notify_id", "hbl_agent_id", "customs_broker_id", "trucker_id"
+  "also_notify_id", "hbl_agent_id", "customs_broker_id", "trucker_id",
+  "bl_acct_carrier_id", "direct_customer_id", "direct_bill_to_id", "direct_consignee_id"
 ]);
 
+const OFFICE_FIELDS = new Set(["office"]);
+
 const AUTO_GENERATED_FIELDS_BY_FLOW = {
-  mbl: new Set(["mbl_no", "file_no"]),
-  hbl: new Set(["hbl_no", "file_no"])
+  mbl: new Set(["file_no"]),
+  hbl: new Set(["file_no"])
 };
 
 // BA-friendly business meaning for every form field.
@@ -65,9 +70,17 @@ const FIELD_MEANING = {
   carrier_bkg_no:    "The booking confirmation number provided by the carrier (shipping line). Confirms that space has been reserved on the vessel.",
   carrier:           "Name of the shipping line (carrier) transporting the cargo.",
   bl_acct_carrier:   "The carrier name used strictly for accounting and invoicing. May differ from the operating carrier in interline or transshipment arrangements.",
+  bl_acct_carrier_id: "The carrier used for accounting/invoicing. May differ from operating carrier in interline or transshipment scenarios.",
   carrier_contract_no: "Reference number for the service contract or negotiated rate agreement with the carrier.",
   co_flag:           "Check this box if a Certificate of Origin is required for this shipment.",
   direct_master:     "Indicates that this shipment moves directly under a master BL without co-loading or consolidation with other cargo.",
+  direct_customer_ref_no: "Customer reference number used only when Direct Master mode is enabled. Cleared automatically when Direct Master is unchecked.",
+  direct_customer_id: "Customer party for a Direct Master shipment.",
+  direct_bill_to_id:  "Billing party for a Direct Master shipment.",
+  direct_consignee_id:"Consignee party for a Direct Master shipment.",
+  direct_sales_type:  "Sales classification for a Direct Master shipment.",
+  direct_cargo_type:  "Cargo classification for a Direct Master shipment.",
+  direct_sales:       "Sales owner or label for a Direct Master shipment. Cleared automatically when Direct Master is unchecked.",
   booking_agent:     "Check this box if the booking was arranged through an agent rather than placed directly with the carrier.",
 
   // ── MBL Parties ──────────────────────────────────────────────────────────
@@ -155,6 +168,8 @@ const FIELD_MEANING = {
   container_no:      "The ISO container identification number printed on the container door (e.g. MSCU1234567).",
   container_size:    "The container equipment type and physical size used for this shipment.",
   seal_no:           "The seal number applied to the container door after loading. Required for customs verification and cargo security.",
+  pkg_type:          "The type of packaging unit used (e.g. CARTON, PALLET, DRUM). Shared across all item rows in the same container.",
+  package_count:     "Number of individual packages in this container row.",
   tare_weight:       "The weight of the empty container itself, as stamped on the container door panel.",
   vgm:               "Verified Gross Mass — the total certified weight of the loaded container, required by SOLAS international maritime regulations.",
   number_of_packages:"Total count of individual packages, boxes, cartons, pallets, or other shipping units.",
@@ -235,6 +250,8 @@ function inferDataSource(field, flowId) {
     return "Location lookup — UN/LOCODE database (GET /api/locations). Type at least 2 characters to search by city name or LOCODE code.";
   if (TRADE_PARTNER_FIELDS.has(field.name))
     return "Trade Partner lookup — internal partner database (GET /trade-partners/). Search by company name or partner code. New partners must be created in the Trade Partners module first.";
+  if (OFFICE_FIELDS.has(field.name))
+    return "Office lookup (searchable input). Stored as office code on the shipment record.";
   if (field.name === "vessel_id")
     return "Vessel lookup — internal vessel register (GET /vessels/). Search by name or 7-digit IMO number. If not found, the vessel can be added inline via the quick-add form.";
   if (field.name === "container_size")
@@ -253,7 +270,7 @@ function buildReferenceCatalog(fields, flowId) {
     const key = f.name;
     if (!key || key === "-" || seen.has(key)) continue;
     const hasEnum  = Boolean(flowEnum[key]);
-    const isMaster = LOCATION_FIELDS.has(key) || TRADE_PARTNER_FIELDS.has(key) || key === "vessel_id";
+    const isMaster = LOCATION_FIELDS.has(key) || TRADE_PARTNER_FIELDS.has(key) || key === "vessel_id" || OFFICE_FIELDS.has(key);
     if (!hasEnum && !isMaster) continue;
     rows.push({
       name:   key,
@@ -350,7 +367,8 @@ function renderMarkdown(flow, fields, sections, requiredSelectors, screenshots) 
     "Submitting the form with empty required fields shows inline error messages without a page reload.",
     "A valid record can be saved and the system redirects to the detail/list view with the new record visible.",
     "All dropdown (select) options match the values defined in the application constants.",
-    "Date fields only accept valid date input (ISO YYYY-MM-DD) and do not accept free-form text."
+    "Date fields only accept valid date input (ISO YYYY-MM-DD) and do not accept free-form text.",
+    "Optional fields may be omitted; the system sends `null` for empty values and stores them as nullable."
   ];
 
   const sectionsBlock = sections.length
@@ -359,8 +377,10 @@ function renderMarkdown(flow, fields, sections, requiredSelectors, screenshots) 
 
   const fieldRows = fields
     .map(
-      (f) =>
-        `| ${f.label} | \`${f.name}\` | ${f.required ? "**Yes**" : "No"} | ${inferMeaning(f, flow.id)} | ${inferValueSpec(f, flow.id)} | ${inferDataSource(f, flow.id)} |`
+      (f) => {
+        const isRequired = f.required || reqNameMap.has(f.name);
+        return `| ${f.label} | \`${f.name}\` | ${isRequired ? "**Yes**" : "No"} | ${inferMeaning(f, flow.id)} | ${inferValueSpec(f, flow.id)} | ${inferDataSource(f, flow.id)} |`;
+      }
     )
     .join("\n");
 
@@ -376,6 +396,29 @@ function renderMarkdown(flow, fields, sections, requiredSelectors, screenshots) 
     .map((s) => `![${s.id}](../assets/ocean-export/${s.imageName})\n_${s.description || s.id}_`)
     .join("\n\n");
 
+  const containerItemsSection = flow.id === "mbl" ? `
+## Container Items (Line Items)
+
+The **Container Items** table records one row per container loaded on this shipment. Rows are added manually via **ADD ITEM** or bulk-populated via **INHERIT ALL ITEMS FROM ALL HBL** (copies every container row from linked HBLs). Each row contains the following columns:
+
+| Column | Field Key | Allowed Values / Format | Notes |
+|---|---|---|---|
+| Container No. | \`container_no\` | Free text (ISO format, e.g. MSCU1234567) | Mandatory for customs filings |
+| Size | \`container_size\` | 20GP, 40GP, 40HC, 45HC, 20RF, 40RF | Fixed dropdown |
+| Seal No. | \`seal_no\` | Free text | Printed on container door seal |
+| Pkg Type | \`pkg_type\` | CARTON, PALLET, DRUM, BAG, BUNDLE, CAN, CASE, COIL, CRATE, CYLINDER, PIECE, ROLL, SKID, WOODEN CASE, WOODEN CRATE, WOODEN PALLET | Shared across all rows; single selector above the table |
+| Pkg Count | \`package_count\` | Numeric | Per-row count; table footer shows running total |
+| Tare Wt | \`tare_weight\` | Numeric (KG or LB) | Weight of empty container |
+| VGM | \`vgm\` | Numeric (KG or LB) | SOLAS-required certified gross mass |
+| Net Wt | \`net_weight\` | Numeric (KG or LB) | Cargo weight only |
+| Gross Wt | \`gross_weight\` | Numeric (KG or LB) | Cargo + packaging weight |
+| Meas. | \`measurement\` | Numeric (CBM or CFT) | Volume |
+
+The table footer auto-calculates **totals** for Pkg Count, Tare, VGM, Net Wt, Gross Wt, and Measurement across all rows.
+
+**COPY FROM ALL HBL** on the Description of Goods field merges descriptions from all linked HBLs into the MBL text area.
+` : "";
+
   return (
     `# ${sectionTitle(flow.id)}\n\n` +
     `## User Story\n${storyFor(flow.id)}\n\n` +
@@ -384,6 +427,7 @@ function renderMarkdown(flow, fields, sections, requiredSelectors, screenshots) 
     `## Acceptance Criteria\n${acceptance.map((ac, i) => `${i + 1}. ${ac}`).join("\n")}\n\n` +
     `## Validation Rules\n${validationRules}\n\n` +
     `## Field Semantics\n| Label | Name | Required | Business Meaning | Allowed Values / Format | Data Source / Reference |\n|---|---|---|---|---|---|\n${fieldRows || "| - | - | - | - | - | - |"}\n\n` +
+    containerItemsSection +
     `## Reference Data & Enum Catalog\n| Label | Name | Enum / Lookup Values | Source |\n|---|---|---|---|\n${referenceRows}\n`
   );
 }

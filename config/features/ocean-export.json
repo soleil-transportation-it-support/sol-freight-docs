@@ -10,7 +10,7 @@
         {
           "id": "mbl-list",
           "description": "Shipment list filtered to ocean mode — entry point to MBL management.",
-          "path": "/shipments?mode=ocean",
+          "path": "/ocean-export/masters",
           "waitForSelector": "body",
           "screenshotSelector": "table",
           "scrollToBottom": true,
@@ -23,11 +23,12 @@
         {
           "id": "mbl-create",
           "description": "New MBL form — all sections visible on one page.",
-          "path": "/ocean/masters/new",
+          "path": "/ocean-export/masters/new",
           "waitForSelector": "form#mbl-form",
           "screenshotSelector": "form#mbl-form",
           "scrollToBottom": true,
-          "requiredFields": ["input[name='office']"],
+          "expandSelectors": ["input[name='direct_master']"],
+          "requiredFields": ["input[name='mbl_no']", "input[name='office']", "input[name='etd']"],
           "focusSelectors": [
             "input[name='mbl_no']",
             "input[name='file_no']",
@@ -44,6 +45,14 @@
             "input[name='co_loader_id']",
             "input[name='op']",
             "input[name='carrier_contract_no']",
+            "input[name='direct_master']",
+            "input[name='direct_customer_ref_no']",
+            "input[name='direct_customer_id']",
+            "input[name='direct_bill_to_id']",
+            "input[name='direct_consignee_id']",
+            "select[name='direct_sales_type']",
+            "select[name='direct_cargo_type']",
+            "input[name='direct_sales']",
             "input[name='vessel_id']",
             "input[name='voyage_no']",
             "input[name='place_of_receipt']",
@@ -78,7 +87,7 @@
         {
           "id": "mbl-detail",
           "description": "MBL detail view for a seeded record — shows all populated fields and HBL sub-list.",
-          "pathTemplate": "/ocean/masters/{seededMblId}",
+          "pathTemplate": "/ocean-export/masters/{seededMblId}",
           "waitForSelector": "body",
           "screenshotSelector": "main",
           "scrollToBottom": true,
@@ -89,9 +98,17 @@
           ]
         },
         {
+          "id": "mbl-edit",
+          "description": "Edit form for a seeded MBL — shows Container Items table with existing rows populated.",
+          "pathTemplate": "/ocean-export/masters/{seededMblId}/edit",
+          "waitForSelector": "form#mbl-form",
+          "screenshotSelector": "form#mbl-form",
+          "scrollToBottom": true
+        },
+        {
           "id": "mbl-validation-error",
           "description": "Submit empty MBL form to capture required-field error state.",
-          "path": "/ocean/masters/new",
+          "path": "/ocean-export/masters/new",
           "waitForSelector": "form#mbl-form",
           "screenshotSelector": "form#mbl-form",
           "triggerSubmit": true,
@@ -111,11 +128,11 @@
         {
           "id": "hbl-create",
           "description": "New HBL form opened under a seeded MBL — MBL banner visible at top, all HBL fields below.",
-          "pathTemplate": "/ocean/masters/{seededMblId}/houses/new",
+          "pathTemplate": "/ocean-export/masters/{seededMblId}/houses/new",
           "waitForSelector": "form#hbl-form",
           "screenshotSelector": "form#hbl-form",
           "scrollToBottom": true,
-          "requiredFields": ["input[name='actual_shipper_id']"],
+          "requiredFields": ["input[name='hbl_no']", "input[name='actual_shipper_id']"],
           "focusSelectors": [
             "input[name='hbl_no']",
             "input[name='booking_no']",
@@ -169,7 +186,7 @@
         {
           "id": "hbl-validation-error",
           "description": "Submit empty HBL form to capture required-field error state.",
-          "pathTemplate": "/ocean/masters/{seededMblId}/houses/new",
+          "pathTemplate": "/ocean-export/masters/{seededMblId}/houses/new",
           "waitForSelector": "form#hbl-form",
           "screenshotSelector": "form#hbl-form",
           "triggerSubmit": true,

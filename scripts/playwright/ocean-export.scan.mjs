@@ -228,6 +228,28 @@ async function run() {
         });
 
         metadata = await extractMetadata(page);
+
+        // If step has expandSelectors, click each to reveal conditional fields,
+        // then merge the newly revealed metadata (dedup by name).
+        if (step.expandSelectors && step.expandSelectors.length > 0) {
+          for (const sel of step.expandSelectors) {
+            try {
+              await page.click(sel);
+              await page.waitForTimeout(300);
+            } catch {
+              // ignore if selector not found
+            }
+          }
+          const expandedMeta = await extractMetadata(page);
+          const existingNames = new Set(metadata.map((m) => m.name).filter(Boolean));
+          for (const item of expandedMeta) {
+            if (item.name && !existingNames.has(item.name)) {
+              metadata.push(item);
+              existingNames.add(item.name);
+            }
+          }
+        }
+
         sections = await extractSections(page);
       } catch (err) {
         error = err.message;

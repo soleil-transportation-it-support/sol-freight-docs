@@ -24,21 +24,23 @@ _Submit empty HBL form to capture required-field error state._
 4. A valid record can be saved and the system redirects to the detail/list view with the new record visible.
 5. All dropdown (select) options match the values defined in the application constants.
 6. Date fields only accept valid date input (ISO YYYY-MM-DD) and do not accept free-form text.
+7. Optional fields may be omitted; the system sends `null` for empty values and stores them as nullable.
 
 ## Validation Rules
-1. **Actual Shipper*** (`name="actual_shipper_id"`) must not be empty; form must block submission and highlight the field with an error message.
+1. **HB/L No.*** (`name="hbl_no"`) must not be empty; form must block submission and highlight the field with an error message.
+2. **Actual Shipper*** (`name="actual_shipper_id"`) must not be empty; form must block submission and highlight the field with an error message.
 
 ## Field Semantics
 | Label | Name | Required | Business Meaning | Allowed Values / Format | Data Source / Reference |
 |---|---|---|---|---|---|
-| HB/L No.* | `hbl_no` | No | System-generated House BL number. This field is read-only and assigned automatically by the application. | System-generated (read-only) | Generated and maintained by the application; not entered by users. |
+| HB/L No.* | `hbl_no` | **Yes** | The House Bill of Lading number — the customer-facing document reference used by the shipper and consignee for all correspondence and customs clearance. | Free text | Entered directly by the user and stored in the shipment record. |
 | Booking No. | `booking_no` | No | The booking or reservation reference number assigned at the time the space was confirmed. | Free text | Entered directly by the user and stored in the shipment record. |
 | AMS No. | `ams_no` | No | Automated Manifest System (AMS) filing number submitted to U.S. Customs. Required for all cargo destined for or transiting through the United States. | Free text | Entered directly by the user and stored in the shipment record. |
 | ISF No. | `isf_no` | No | Importer Security Filing (ISF / 10+2) number filed with U.S. Customs. Must be submitted at least 24 hours before cargo is loaded at origin. | Free text | Entered directly by the user and stored in the shipment record. |
 | Customer Ref. No. | `customer_ref_no` | No | The customer's own internal reference number for this shipment, for their records. | Free text | Entered directly by the user and stored in the shipment record. |
 | Document No. | `document_no` | No | Soleil's internal document control number assigned to this House BL. | Free text | Entered directly by the user and stored in the shipment record. |
 | Quotation No. | `quotation_no` | No | The sales quotation number that was accepted and led to this booking. | Free text | Entered directly by the user and stored in the shipment record. |
-| Actual Shipper* | `actual_shipper_id` | No | The company or individual physically shipping the goods — the exporter of record on customs documents. | Free text | Trade Partner lookup — internal partner database (GET /trade-partners/). Search by company name or partner code. New partners must be created in the Trade Partners module first. |
+| Actual Shipper* | `actual_shipper_id` | **Yes** | The company or individual physically shipping the goods — the exporter of record on customs documents. | Free text | Trade Partner lookup — internal partner database (GET /trade-partners/). Search by company name or partner code. New partners must be created in the Trade Partners module first. |
 | B/L Type | `bl_type` | No | Defines the commercial arrangement for how this Bill of Lading is structured and billed — e.g., whether it is a direct shipment, a consolidation, or a co-load. | CARRIER BUYER CONSOL, CO-LOAD, CONSOL, DIRECT, DIRECT TRIANGLE, FORWARDING, NORMAL, THIRD PARTY, TRIANGLE | Fixed dropdown list configured in the application. |
 | File No. | `file_no` | No | System-generated value. This field is read-only and populated by the application. | System-generated (read-only) | Generated and maintained by the application; not entered by users. |
 | Post Date | `post_date` | No | The date this document is officially recorded in the system. Defaults to today. | Date (YYYY-MM-DD) | Entered directly by the user and stored in the shipment record. |
